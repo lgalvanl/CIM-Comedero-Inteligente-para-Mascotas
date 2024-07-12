@@ -36,3 +36,33 @@ uint32_t strlen_(const char* str) {
     }
     return len;
 }
+
+char* strncpy_(char* dst, const char* src, uint32_t len) {
+    if (dst == NULL || src == NULL || len == 0) {
+        return NULL;
+    }
+    char* ret = dst;
+    while (len > 1 && *src != '\0') {
+        *dst++ = *src++;
+        len--;
+    }
+    *dst = '\0'; 
+    return ret;
+}
+
+char* strndup_(const char* src, size_t n) {
+    size_t len = 0;
+    while (len < n && src[len] != '\0') {
+        len++;
+    }
+    char* dst = (char*)malloc(len + 1);
+    if (!dst) {
+        return NULL; 
+    }
+    for (size_t i = 0; i < len; i++) {
+        dst[i] = src[i];
+    }
+    dst[len] = '\0';
+
+    return dst;
+}
