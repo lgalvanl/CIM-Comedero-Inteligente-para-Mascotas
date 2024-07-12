@@ -69,10 +69,10 @@ void regDatosRFIDUpdate() {
     if (SeDetectaMascota && !Masc) {
         printf("Primera deteccion\n");
         Masc = true;
-        LedBlue = 1;
+        //LedBlue = 1;
     } else if (!SeDetectaMascota && Masc) {
         printf("Ultima deteccion\n");
-        LedBlue = 0;
+        //LedBlue = 0;
         Masc = false;
     }
     rfidEstado = RFID_ESPERO_ID;
@@ -86,7 +86,5 @@ char* rfidGetUid(){
 
     char* aux=strndup_(buffer,10);
     buffer[0]={'\0'};
-    //Ya procese el uid ingresado a si que vuelvo a modo de esepra
     return aux;
-
 }
