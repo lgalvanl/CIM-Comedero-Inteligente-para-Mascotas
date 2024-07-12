@@ -1,9 +1,9 @@
 //=====[Libraries]=============================================================
 
 #include "mbed.h"
-
 #include "ble_com.h"
-#include "sensor_balance.h" 
+#include <string.h>
+#include "arm_book_lib.h"
 #include "cadenas.h"
 //=====[Declaration of private defines]========================================
 
@@ -24,19 +24,12 @@ static int bufferIndex = 0;
 
 //=====[Declarations (prototypes) of private functions]========================
 
-static char bleComCharRead();
+char bleComCharRead();
 
 //=====[Implementations of public functions]===================================
 
-void bleComUpdate() 
-{
-    char receivedChar = bleComCharRead();
-    if( receivedChar != '\0' ) {
-        switch (receivedChar) {
-            case 'D': printf("apretaste D"); break; //modificar
-            case 'A': printf("apretaste A"); break; //modificar
-        }
-    }
+void bleComStringWrite(const char* str) {
+    uartBle.write(str, strlen_(str));
 }
 
 char* bleComReadString() {
@@ -47,23 +40,26 @@ char* bleComReadString() {
             buffer[bufferIndex] = '\0';
             
             bufferIndex = 0;
-            return buffer; 
+            return buffer;
         } else {
             if (bufferIndex < MAX_LETRAS - 1) {
                 buffer[bufferIndex++] = receivedChar;
             }
         }
     }
+    printf("error al recibir cadena :( \n");
     return NULL; 
 }
 
 //=====[Implementations of private functions]==================================
 
-static char bleComCharRead()
-{
+char bleComCharRead(){
     char receivedChar = '\0';
     if( uartBle.readable() ) {
-        uartBle.read(&receivedChar,1);
+        uartBle.read(&receivedChar, 1);
+        //printf("Caracter BLE recibido: %c\n", receivedChar);
     }
     return receivedChar;
 }
+
+

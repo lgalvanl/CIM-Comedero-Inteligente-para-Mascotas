@@ -4,7 +4,7 @@
 #define _BLE_COM_H_
 
 //=====[Declaration of public defines]=========================================
-
+#define MAX_LETRAS 50
 //=====[Declaration of public data types]======================================
 
 //=====[Declarations (prototypes) of public functions]=========================
