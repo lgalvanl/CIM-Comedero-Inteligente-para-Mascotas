@@ -11,7 +11,7 @@
 
 void bleComUpdate();
 void bleComStringWrite( const char* str );
-char* bleComReadString();
+char* bleComReadString(int largo);
 
 
 //=====[#include guards - end]=================================================

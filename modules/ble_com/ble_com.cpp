@@ -32,25 +32,25 @@ void bleComStringWrite(const char* str) {
     uartBle.write(str, strlen_(str));
 }
 
-char* bleComReadString() {
-    char receivedChar = '\0';
-    while (uartBle.readable()) {
-        uartBle.read(&receivedChar, 1);
-        if (receivedChar == '\n') { 
-            buffer[bufferIndex] = '\0';
-            
-            bufferIndex = 0;
-            return buffer;
-        } else {
-            if (bufferIndex < MAX_LETRAS - 1) {
-                buffer[bufferIndex++] = receivedChar;
+char* bleComReadString(int largo) {
+    static char receivedString[51]; 
+    int i = 0;
+
+    while (i < largo) {
+        if (uartBle.readable()) {
+            char receivedChar = '\0';
+            uartBle.read(&receivedChar, 1);
+            if (receivedChar == '\n') {
+                break;
             }
+            receivedString[i] = receivedChar;
+            i++;
         }
     }
-    printf("error al recibir cadena :( \n");
-    return NULL; 
-}
 
+    receivedString[i] = '\0'; // Asegurar que la cadena está terminada con un carácter nulo
+    return receivedString;
+}
 //=====[Implementations of private functions]==================================
 
 char bleComCharRead(){
