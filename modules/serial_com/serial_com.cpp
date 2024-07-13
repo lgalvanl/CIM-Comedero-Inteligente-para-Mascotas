@@ -5,13 +5,14 @@
 #include "serial_com.h"
 #include "ble_com.h"
 #include "sensor_rfid.h"
+#include <cstdio>
 //=====[Declaration of private defines]========================================
 
 //=====[Declaration of private data types]=====================================
 
 //=====[Declaration and initialization of public global objects]===============
 
-UnbufferedSerial uartUsb(USBTX, USBRX, 115200);
+//UnbufferedSerial uartUsb(USBTX, USBRX, 115200);
 
 //=====[Declaration and initialization of private global objects]===============
 
@@ -23,32 +24,24 @@ UnbufferedSerial uartUsb(USBTX, USBRX, 115200);
 
 //=====[Declarations (prototypes) of private functions]========================
 
-static void SerialComCommandUpdate(char receivedChar);
 void prenderLedVerde();
 void prenderLedRojo();
 void ApagarLeds();
 void prenderLeds();
 
 //=====[Implementations of public functions]===================================
-void SerialComUpdate()
-{
-    char receivedChar = SerialComCharRead();
+void SerialComUpdate(){
+    char DataRecibida[50] = "";
+    char receivedChar = bleComCharRead();
     if( receivedChar != '\0' ) {
-        printf("Caracter recibido: %c\n", receivedChar);
-        SerialComCommandUpdate(receivedChar);
-    }
-}
-
-char *DataRecibida;
-static void SerialComCommandUpdate(char receivedChar){
-    switch (receivedChar) {
+        switch (receivedChar) {
         case 'd': case 'D': 
-            printf("Hay data que llega de la app\n");
-            DataRecibida = bleComReadString(); 
-            if (DataRecibida != NULL) {
-                printf("Recibimos: %s\n", DataRecibida);
+            printf("App manda una cadena: \n");
+            SerialComStringRead(DataRecibida,49);
+            if(DataRecibida[0] != NULL) {
+                printf("Leo desde la app: %s\n", DataRecibida);
             } else {
-                printf("Error al recibir cadena :(\n");
+                printf("error al leer\n");
             }
             break;
         case 'm': case 'M': 
@@ -67,17 +60,9 @@ static void SerialComCommandUpdate(char receivedChar){
             printf("Error al leer\n"); 
             break;
     } 
-}
-char SerialComCharRead(){
-    char receivedChar = '\0';
-    if( uartUsb.readable() ) {
-        uartUsb.read( &receivedChar, 1 );
     }
-    if( receivedChar == '\0' ) {
-        receivedChar = bleComCharRead();
-    }
-    return receivedChar;
 }
+
 
 //=====[Implementations of private functions]==================================
 void prenderLedVerde(){

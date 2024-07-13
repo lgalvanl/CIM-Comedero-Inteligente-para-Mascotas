@@ -13,9 +13,8 @@
 
 
 //=====[Declarations (prototypes) of public functions]=========================
+
 void SerialComUpdate();
-char SerialComCharRead();
-static void SerialComCommandUpdate(char receivedChar);
 
 //=====[#include guards - end]=================================================
 
