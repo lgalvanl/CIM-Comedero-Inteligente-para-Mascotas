@@ -10,8 +10,8 @@
 //=====[Declaration of private data types]=====================================
 
 //=====[Declaration and initialization of public global objects]===============
-
 UnbufferedSerial uartBle(PD_5, PD_6, 9600);
+UnbufferedSerial uartpc(USBTX, USBRX,115200);
 
 //=====[Declaration of external public global variables]=======================
 
@@ -19,39 +19,28 @@ UnbufferedSerial uartBle(PD_5, PD_6, 9600);
 
 //=====[Declaration and initialization of private global variables]============
 
-static char buffer[MAX_LETRAS] = {0};
-static int bufferIndex = 0;
-
 //=====[Declarations (prototypes) of private functions]========================
 
-char bleComCharRead();
+
+
 
 //=====[Implementations of public functions]===================================
+
+
 
 void bleComStringWrite(const char* str) {
     uartBle.write(str, strlen_(str));
 }
 
-char* bleComReadString(int largo) {
-    static char receivedString[51]; 
-    int i = 0;
-
-    while (i < largo) {
-        if (uartBle.readable()) {
-            char receivedChar = '\0';
-            uartBle.read(&receivedChar, 1);
-            if (receivedChar == '\n') {
-                break;
-            }
-            receivedString[i] = receivedChar;
-            i++;
-        }
+void SerialComStringRead( char* str, int strLength ){
+    //printf("aun estoy vivo");
+    int strIndex;
+    for ( strIndex = 0; strIndex < strLength; strIndex++) {
+        uartBle.read( &str[strIndex] , 1 );
+        uartBle.write( &str[strIndex] ,1 );
     }
-
-    receivedString[i] = '\0'; // Asegurar que la cadena está terminada con un carácter nulo
-    return receivedString;
+    str[strLength]='\0';
 }
-//=====[Implementations of private functions]==================================
 
 char bleComCharRead(){
     char receivedChar = '\0';
@@ -61,5 +50,8 @@ char bleComCharRead(){
     }
     return receivedChar;
 }
+//=====[Implementations of private functions]==================================
+
+
 
 

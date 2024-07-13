@@ -4,15 +4,14 @@
 #define _BLE_COM_H_
 
 //=====[Declaration of public defines]=========================================
-#define MAX_LETRAS 50
+
 //=====[Declaration of public data types]======================================
 
 //=====[Declarations (prototypes) of public functions]=========================
 
-void bleComUpdate();
+char bleComCharRead();
 void bleComStringWrite( const char* str );
-char* bleComReadString(int largo);
-
+void SerialComStringRead( char* str, int strLength );
 
 //=====[#include guards - end]=================================================
 
