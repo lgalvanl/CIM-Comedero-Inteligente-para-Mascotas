@@ -10,9 +10,9 @@
 //=====[Declarations (prototypes) of public functions]=========================
 
 void balanceSensorInit();
-long gramosPesados(long valor);
-long gramosConsumidos(long valorInicial, long valorFinal);
-//aca no van las funciones privadas
+int gramosPesados(int valor);
+int gramosConsumidos(int valorInicial, int valorFinal);
+
 //=====[#include guards - end]=================================================
 
 #endif // _BALANCE_SENSOR_H_

@@ -10,8 +10,8 @@
 
 //=====[Declaration and initialization of public global objects]===============
 
-HX711 balanza(PC_0,PA_3);
-          //    (A1,A0)
+HX711 balanza(A0,A1);
+
 //=====[Declaration of external public global variables]=======================
 
 //=====[Declaration and initialization of public global variables]=============
@@ -23,22 +23,16 @@ HX711 balanza(PC_0,PA_3);
 
 //=====[Implementations of public functions]===================================
 
-void balanceSensorInit()
-{
-    long pesoInicial = 0;
-    long pesoFinal = 0;
-
+void balanceSensorInit(){
+    balanza.setScale(63079621.20/150);
 }
 
-//void balanceSensorUpdate()
-
-
-long gramosPesados(long valor){
-   valor = balanza.getValue();
+int gramosPesados(int valor){
+   valor = balanza.getGram();
    return valor;
 }
 
-long gramosConsumidos(long valorInicial, long valorFinal){
+int gramosConsumidos(int valorInicial, int valorFinal){
     return (valorFinal - valorInicial);
 }
 
