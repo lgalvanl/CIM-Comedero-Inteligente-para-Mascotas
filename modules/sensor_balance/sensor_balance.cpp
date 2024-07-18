@@ -33,7 +33,7 @@ int gramosPesados(int valor){
 }
 
 int gramosConsumidos(int valorInicial, int valorFinal){
-    return (valorFinal - valorInicial);
+    return (valorInicial- valorFinal);
 }
 
 //=====[Implementations of private functions]==================================
