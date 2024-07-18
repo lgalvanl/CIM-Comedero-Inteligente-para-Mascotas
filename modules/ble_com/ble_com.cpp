@@ -33,7 +33,6 @@ void bleComStringWrite(const char* str) {
 }
 
 void SerialComStringRead( char* str, int strLength ){
-    //printf("aun estoy vivo");
     int strIndex;
     for ( strIndex = 0; strIndex < strLength; strIndex++) {
         uartBle.read( &str[strIndex] , 1 );
@@ -46,10 +45,10 @@ char bleComCharRead(){
     char receivedChar = '\0';
     if( uartBle.readable() ) {
         uartBle.read(&receivedChar, 1);
-        //printf("Caracter BLE recibido: %c\n", receivedChar);
     }
     return receivedChar;
 }
+
 //=====[Implementations of private functions]==================================
 
 
