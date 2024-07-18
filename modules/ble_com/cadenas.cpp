@@ -3,7 +3,7 @@
 #include "mbed.h"
 #include "arm_book_lib.h"
 #include "cadenas.h"
-
+#include <stddef.h>
 
 //=====[Declaration of private defines]========================================
 
@@ -36,6 +36,16 @@ uint32_t strlen_(const char* str) {
     }
     return len;
 }
+char* strcpy_(char* dst, char* src) {
+    if (dst == NULL || src == NULL) {
+        return NULL;
+    }
+    char* ret = dst;
+    while ((*dst++ = *src++) != '\0') {
+        // Copia los caracteres uno por uno
+    }
+    return ret;
+}
 
 char* strncpy_(char* dst, const char* src, uint32_t len) {
     if (dst == NULL || src == NULL || len == 0) {
@@ -65,4 +75,51 @@ char* strndup_(const char* src, size_t n) {
     dst[len] = '\0';
 
     return dst;
+}
+
+char* strtok_(char* str, const char* delimiters) {
+    static char* last = NULL;
+
+    if (str == NULL) {
+        str = last;
+    }
+
+    if (str == NULL) {
+        return NULL;
+    }
+
+    // Saltar los delimitadores iniciales
+    while (*str && strchr_(delimiters, *str)) {
+        str++;
+    }
+
+    if (*str == '\0') {
+        last = NULL;
+        return NULL;
+    }
+
+    char* token_start = str;
+    while (*str && !strchr_(delimiters, *str)) {
+        str++;
+    }
+    if (*str) {
+        *str = '\0';
+        last = str + 1;
+    } else {
+        last = NULL;
+    }
+    return token_start;
+}
+
+char* strchr_(const char* str, int character) {
+    while (*str != '\0') {
+        if (*str == (char)character) {
+            return (char*)str;
+        }
+        str++;
+    }
+    if (character == '\0') {
+        return (char*)str;
+    }
+    return NULL;
 }
