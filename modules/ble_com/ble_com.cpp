@@ -11,7 +11,6 @@
 
 //=====[Declaration and initialization of public global objects]===============
 UnbufferedSerial uartBle(PD_5, PD_6, 9600);
-UnbufferedSerial uartpc(USBTX, USBRX,115200);
 
 //=====[Declaration of external public global variables]=======================
 
@@ -28,7 +27,7 @@ UnbufferedSerial uartpc(USBTX, USBRX,115200);
 
 
 
-void bleComStringWrite(const char* str) {
+void bleComStringWrite(char* str) {
     uartBle.write(str, strlen_(str));
 }
 
