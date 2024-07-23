@@ -36,14 +36,15 @@ uint32_t strlen_(const char* str) {
     }
     return len;
 }
+
 char* strcpy_(char* dst, char* src) {
     if (dst == NULL || src == NULL) {
         return NULL;
     }
     char* ret = dst;
     while ((*dst++ = *src++) != '\0') {
-        // Copia los caracteres uno por uno
     }
+
     return ret;
 }
 
@@ -83,21 +84,16 @@ char* strtok_(char* str, const char* delimiters) {
     if (str == NULL) {
         str = last;
     }
-
     if (str == NULL) {
         return NULL;
     }
-
-    // Saltar los delimitadores iniciales
     while (*str && strchr_(delimiters, *str)) {
         str++;
     }
-
     if (*str == '\0') {
         last = NULL;
         return NULL;
     }
-
     char* token_start = str;
     while (*str && !strchr_(delimiters, *str)) {
         str++;
