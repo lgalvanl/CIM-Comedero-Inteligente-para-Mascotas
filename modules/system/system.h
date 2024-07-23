@@ -4,7 +4,7 @@
 
 #define SYSTEM_TIME_INCREMENT_MS   10
 
-void SystemInit();
+void SystemInit_();
 void SystemUpdate();
 
 #endif // _SYSTEM_H_
