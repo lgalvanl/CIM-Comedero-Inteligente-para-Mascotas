@@ -7,10 +7,14 @@
 
 //=====[Declaration of public data types]======================================
 
+extern int primer_valor;
+extern int segundo_valor;
+extern int gramos_consumidos;
+
 //=====[Declarations (prototypes) of public functions]=========================
 
 void balanceSensorInit();
-int gramosPesados(int valor);
+int gramosPesados();
 int gramosConsumidos(int valorInicial, int valorFinal);
 
 //=====[#include guards - end]=================================================

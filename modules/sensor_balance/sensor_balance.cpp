@@ -14,6 +14,10 @@ HX711 balanza(A0,A1);
 
 //=====[Declaration of external public global variables]=======================
 
+int primer_valor = 0;
+int segundo_valor = 0;
+int gramos_consumidos = 0;
+
 //=====[Declaration and initialization of public global variables]=============
 
 
@@ -27,7 +31,8 @@ void balanceSensorInit(){
     balanza.setScale(63079621.20/150);
 }
 
-int gramosPesados(int valor){
+int gramosPesados(){
+   int valor = 0;
    valor = balanza.getGram();
    return valor;
 }
