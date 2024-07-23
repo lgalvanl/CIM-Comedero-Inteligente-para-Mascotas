@@ -7,10 +7,7 @@
 
 //=====[Declaration of public data types]======================================
 
-
-
-
-
+extern bool DataRecibida;
 
 //=====[Declarations (prototypes) of public functions]=========================
 

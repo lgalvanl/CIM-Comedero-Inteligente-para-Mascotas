@@ -6,17 +6,22 @@
 #include "ble_com.h"
 #include "sensor_rfid.h"
 #include <cstdio>
+#include "data_usuario.h"
+#include "eventos.h"
+
 //=====[Declaration of private defines]========================================
 
 //=====[Declaration of private data types]=====================================
 
 //=====[Declaration and initialization of public global objects]===============
 
-//UnbufferedSerial uartUsb(USBTX, USBRX, 115200);
+
 
 //=====[Declaration and initialization of private global objects]===============
 
 //=====[Declaration of external public global variables]=======================
+
+bool DataRecibida = false;
 
 //=====[Declaration and initialization of public global variables]=============
 
@@ -24,37 +29,35 @@
 
 //=====[Declarations (prototypes) of private functions]========================
 
-void prenderLedVerde();
-void prenderLedRojo();
-void ApagarLeds();
-void prenderLeds();
-
 //=====[Implementations of public functions]===================================
 void SerialComUpdate(){
-    char DataRecibida[50] = "";
+    //DataRecibida = false;
     char receivedChar = bleComCharRead();
     if( receivedChar != '\0' ) {
         switch (receivedChar) {
-        case 'd': case 'D': 
-            printf("App manda una cadena: \n");
-            SerialComStringRead(DataRecibida,49);
-            if(DataRecibida[0] != NULL) {
-                printf("Leo desde la app: %s\n", DataRecibida);
-            } else {
-                printf("error al leer\n");
-            }
+        case 'D': 
+            csv_a_cadena(cadena);
+            printf("se leyo: %s \n",cadena);
+            inicializarArregloMascotas(arreglo_mascotas,cadena);
             break;
-        case 'm': case 'M': 
+        case 'm': 
             printf("App pide la info recolectada\n");
-            ApagarLeds(); 
+            mandar_data();
             break;
-        case 'R': case 'r': 
-            printf("App esta pidiendo el valor del uid\n");
-            uid = rfidGetUid();
-            printf("valor leido: %s\n", uid);
+        case 'r': 
+            printf("App pide valor de uid\n");
             bleComStringWrite(uid);
-            //printf("valor de uid %s \n",uid);
-            
+            break;    
+        case 'l': 
+            printf("Ya se envio toda la info!\n");
+            DataRecibida = true;
+            break;
+        case 'a': 
+            printf("La app pregunta si hay alguna alerta a recibir\n");
+            if(HayAlerta){
+                bleComStringWrite(nombre_alerta);
+                HayAlerta = false;
+            }
             break;
         default: 
             printf("Error al leer\n"); 
@@ -65,14 +68,3 @@ void SerialComUpdate(){
 
 
 //=====[Implementations of private functions]==================================
-void prenderLedVerde(){
-    
-}
-void prenderLedRojo(){
-    
-}
-void ApagarLeds(){
-   
-}
-void prenderLeds(){
-}
