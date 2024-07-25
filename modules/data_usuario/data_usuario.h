@@ -26,13 +26,13 @@ typedef struct mascota_t {
 
 extern mascota_t arreglo_mascotas[MAX_MASCOTAS];
 extern int indicePetActual;
-extern int Indice;
+extern int IndiceActual;
 
 //=====[Declarations (prototypes) of public functions]=========================
 
 void csv_a_cadena(char *csv);
 void MostrarArreglo(mascota_t *mascotas);
-void detectarMascota(char *uidLeido, int *posicion);
+int detectarMascota(char *uidLeido);
 void inicializarArregloMascotas(mascota_t *mascotas,char *cadenaLeida);
 void time_a_char(ds3231_time_t tiempo, char *tiempo_str);
 //=====[#include guards - end]=================================================

@@ -13,6 +13,7 @@
 #include "cadenas.h"
 #include "eventos.h"
 #include "serial_com.h"
+#include <cstring>
 //=====[Declaration of private defines]========================================
 
 //=====[Declaration of private data types]=====================================
@@ -25,7 +26,7 @@
 
 mascota_t arreglo_mascotas[MAX_MASCOTAS];
 int indicePetActual = 0;
-int Indice = 0;
+int IndiceActual = 0;
 
 //=====[Declaration and initialization of public global variables]=============
 
@@ -58,20 +59,21 @@ void MostrarArreglo(mascota_t *mascotas){ //Imprime por puerto serial el arreglo
          //imprimir_struct(&mascotas[i]); 
     } }
 }
-void detectarMascota(char *uidLeido, int *posicion) { //Compara el valor uid leido y devuelve la posicion del arreglo que corresponde con dicho valor
-    if(DataRecibida){
-        for (int i = 0; i < indicePetActual; i++){
-            if (strcmp_(arreglo_mascotas[i].id_mascota, uidLeido) == 0){
-                *posicion = i;
-                HayEvento = true;
-                return;
-            }
-        } 
-    } else {
-        printf("Aun no se cargo la data desde la app\n ");
-    }
-}
 
+int detectarMascota(char *uidLeido) { //Compara el valor uid leido y devuelve la posicion del arreglo que corresponde con dicho valor
+    int indice = -1; 
+    if (DataRecibida) {
+        for (int i = 0; i < indicePetActual; i++) {
+            //printf("Comparando: %s con %s\n", arreglo_mascotas[i].id_mascota, uidLeido);
+            if (strcasecmp(arreglo_mascotas[i].id_mascota, uidLeido) == 0) {
+                HayEvento = true;
+                indice = i;
+                break; 
+            }
+        }
+    }
+    return indice;
+}
 void time_a_char(ds3231_time_t tiempo, char *tiempo_str) { 
     sprintf(tiempo_str, "%02d:%02d:%02d", tiempo.hours, tiempo.minutes, tiempo.seconds);
 }
