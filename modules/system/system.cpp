@@ -22,14 +22,14 @@ void SystemInit_(){
 
 
 void SystemUpdate(){
-    if(nonBlockingDelayRead(&mainDelay)==true){
+    rfidUpdate();
+    if(nonBlockingDelayRead(&mainDelay)==true){  
+       SerialComUpdate();
        regDatosUpdate();
        ocurreEventoUpdate();
-       SerialComUpdate();
        ChequearContadorBateria();
        ChequearContadores();
-       ocurreEventoUpdate();
        nonBlockingDelayInit(&mainDelay,SYSTEM_TIME_INCREMENT_MS);
     }
-    rfidUpdate();
+    
 }
