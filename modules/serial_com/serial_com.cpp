@@ -47,6 +47,7 @@ void SerialComUpdate(){
         case 'r': 
             printf("App pide valor de uid\n");
             bleComStringWrite(uid);
+            printf("se leyo: %s \n",uid);
             break;    
         case 'l': 
             printf("Ya se envio toda la info!\n");
