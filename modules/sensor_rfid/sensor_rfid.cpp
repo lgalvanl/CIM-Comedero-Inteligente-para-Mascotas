@@ -2,55 +2,61 @@
 #include "non_blocking_delay.h"
 #include "sensor_rfid.h"
 #include "MFRC522.h"
-#include "datos_usuario.h"
-#include "ds3231.h"
 #include "cadenas.h"
+#include "ds3231.h"
+#include "timer.h"
+#include <stdio.h>  
+#include <stdbool.h>  
+#include <string.h> 
+#include "arm_book_lib.h"
+#include "sensor_balance.h"
+#include "data_usuario.h"
+#include "eventos.h"
+#include "ble_com.h"
 //=====[Declaration of private defines]========================================
-
-//=====[Declaration of private data types]=====================================
-
-//=====[Declaration and initialization of public global objects]===============
 #define RFID_RESET PD_15
 #define RFID_SPI_MOSI PA_7
 #define RFID_SPI_MISO PA_6
 #define RFID_SPI_SCLK PA_5
 #define RFID_SPI_CS PD_14 
-//=====[Declaration of external public global variables]=======================
 
-//=====[Declaration and initialization of public global variables]=============
+//=====[Declaration of private data types]=====================================
+
+//=====[Declaration and initialization of public global objects]===============
+
+DigitalOut LedBlue(LED2);
+
 
 //=====[Declaration and initialization of private global variables]============
-static nonBlockingDelay_t rfid_delay;
-static rfidEstado_t rfidEstado = RFID_ESPERO_ID;
+MFRC522 rfidChip(RFID_SPI_MOSI, RFID_SPI_MISO, RFID_SPI_SCLK, RFID_SPI_CS, RFID_RESET);
+nonBlockingDelay_t rfid_delay;
+rfidEstado_t rfidEstado = RFID_ESPERO_ID;
 bool Masc = false;
 bool SeDetectaMascota = false;
-static char buffer[20]= {'\0'};
 
-MFRC522 rfidChip(RFID_SPI_MOSI, RFID_SPI_MISO, RFID_SPI_SCLK, RFID_SPI_CS, RFID_RESET);
+char buffer[MAX_LARGO_UID + 1] = {'\0'};
+char* uid = NULL;
 //=====[Declarations (prototypes) of private functions]========================
 
 
 //=====[Implementations of public functions]===================================
-void rfidInit(){
+
+
+void rfidInit() {
     tickInit();
     rfidChip.PCD_Init();
 }
 
 void rfidUpdate(){
-    char* uid=NULL;
-    //printf("rfidupdate\n");
     switch (rfidEstado) {
         case RFID_ESPERO_ID:
             if (!rfidChip.PICC_IsNewCardPresent()) {
-                //printf("entro a espero id\n");
                 SeDetectaMascota = false;
                 break; 
             }
             rfidEstado = RFID_LLAVERO_DETECTADO;
             break;
-        
         case RFID_LLAVERO_DETECTADO:
-        //printf("auxilio");
             if (!rfidChip.PICC_ReadCardSerial()) {
                 break; 
             }
@@ -58,33 +64,33 @@ void rfidUpdate(){
                 sprintf(buffer + i * 2, "%02X", rfidChip.uid.uidByte[i]);
             }
             uid = rfidGetUid();
-            //printf("valor leido: %s\n", uid);
             SeDetectaMascota = true;
             break;
     }
 }
 
-void regDatosRFIDUpdate() {
-    
-    if (SeDetectaMascota && !Masc) {
-        printf("Primera deteccion\n");
+void regDatosUpdate() {  
+  HayEvento = false;    
+  if (SeDetectaMascota && !Masc) {  
         Masc = true;
-        //LedBlue = 1;
+        LedBlue = 1;
+        primer_valor = gramosPesados();
     } else if (!SeDetectaMascota && Masc) {
-        printf("Ultima deteccion\n");
-        //LedBlue = 0;
+        LedBlue = 0;
         Masc = false;
+        segundo_valor = gramosPesados();
+        IndiceActual = detectarMascota(uid);
     }
     rfidEstado = RFID_ESPERO_ID;
 }
 
-//=====[Implementations of private functions]==================================
-
 char* rfidGetUid(){
     if(rfidEstado!=RFID_LLAVERO_DETECTADO)
         return NULL;
-
     char* aux=strndup_(buffer,10);
     buffer[0]={'\0'};
     return aux;
+
 }
+//=====[Implementations of private functions]==================================
+
