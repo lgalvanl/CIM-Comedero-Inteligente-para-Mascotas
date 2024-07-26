@@ -19,6 +19,7 @@
 //=====[Declaration and initialization of private global objects]===============
 
 //=====[Declaration of external public global variables]=======================
+bool HayAlertaBat = false;
 
 //=====[Declaration and initialization of public global variables]=============
 
@@ -33,10 +34,10 @@ Ds3231 rtc(D14,D15);
 
 void configurar_fecha_hora(){
     //                      {seg,mts,horas,24hs,0}
-    ds3231_time_t horario = {0,26,19,0,0};
+    ds3231_time_t horario = {0,42,10,0,0};
     uint16_t _horario = rtc.set_time(horario);
              //                  {dia,fecha,mes,año}
-    ds3231_calendar_t calendar = {5  , 24  , 7 ,24};
+    ds3231_calendar_t calendar = {5,26,7,24};
     uint16_t _calendario = rtc.set_calendar(calendar);
 }
 
@@ -57,7 +58,10 @@ void ActualizarContador(mascota_t *mascota) {
 }
 
 void InicializarContadorBateria(){
+    HayAlerta = false;
     uint16_t resultado = rtc.get_calendar(&UltimaRecargaBat);
+    UltimaRecargaBat.day = 5;
+    //printf("se inicia a las %d / %d / %d \n", UltimaRecargaBat.date, UltimaRecargaBat.month, UltimaRecargaBat.year);
 }
 
 void ChequearContadores(){
@@ -69,8 +73,8 @@ void ChequearContadores(){
 }
 
 void ChequearContadorBateria(){
-    char cadena_bat[10]= "Bateria  ";
-    ds3231_calendar_t fecha_actual;
+    char cadena_bat[4]= "Bat";
+    ds3231_calendar_t fecha_actual = {5,0,0,0};
     uint16_t resultado_f = rtc.get_calendar(&fecha_actual);
         int dias_pasados = fecha_actual.date - UltimaRecargaBat.date;
         if (dias_pasados >= DIAS_BAT) {

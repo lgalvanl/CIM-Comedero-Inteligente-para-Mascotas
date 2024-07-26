@@ -6,12 +6,12 @@
 
 //=====[Declaration of public defines]=========================================
 #define SEGS_DIA 86400
-#define SEGS_DEMO 40
+#define SEGS_DEMO 120
 #define DIAS_BAT 5
 //=====[Declaration of public data types]======================================
 
 static ds3231_calendar_t UltimaRecargaBat;
-
+extern bool HayAlertaBat;
 //=====[Declarations (prototypes) of public functions]=========================
 
 void configurar_fecha_hora();
