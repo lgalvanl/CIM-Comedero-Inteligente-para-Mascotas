@@ -36,6 +36,7 @@ bool HayAlerta = false;
 
 void cadena_recortada(char *cadena_recortada,char *cadena);
 void gramos_a_mandar(char *gramos_consumidos, int gramos_a_evento);
+void registrarEvento(mascota_t *mascotas, int indice);
 
 //=====[Implementations of public functions]===================================
 void ocurreEventoUpdate(){
@@ -44,36 +45,7 @@ void ocurreEventoUpdate(){
     }
 }
 
-void registrarEvento(mascota_t *mascotas, int indice){
-    if (eventos_registrados >= MAX_EVENTOS) {
-        return;
-    }
-    int gramos_leidos = gramosConsumidos(primer_valor, segundo_valor);
-    char horario[9] = "";
 
-    char nombre_mod[6] = "";
-    char hora_mod [6] = "";
-    char gramos_mod[7] = "";
-
-    char cadena_aux[MAX_LARGO_CSV+1] = "";
-    time_a_char(mascotas[indice].UltimaDeteccion, horario);
-    cadena_recortada(nombre_mod,mascotas[indice].nombre);
-    cadena_recortada(hora_mod,horario);
-    gramos_a_mandar(gramos_mod, gramos_leidos);
-    sprintf(cadena_aux, "%s;%s;%s", gramos_mod,hora_mod,nombre_mod);
-    strncpy_(eventos[eventos_registrados], cadena_aux,MAX_LARGO_CSV+1);
-    //ImprimirEventos();
-    eventos_registrados++;
-
-    ActualizarContador(&mascotas[indice]);
-    mascotas[indice].AlertaNotificada = false;
-}
-
-void ImprimirEventos() {
-    for (int i = 0; i < eventos_registrados; i++) {
-        printf("Evento %d: %s\n", i, eventos[i]);
-    }
-}
 
 void mandar_data(){
     char final[19] = "final de eventos  ";
@@ -110,4 +82,28 @@ void gramos_a_mandar(char *gramos_consumidos, int gramos_a_evento){
     if(gramos_a_evento < 1000 && gramos_a_evento > 99){
         sprintf(gramos_consumidos, "%dgrs",gramos_a_evento);
     }
+}
+
+void registrarEvento(mascota_t *mascotas, int indice){
+    if (eventos_registrados >= MAX_EVENTOS) {
+        return;
+    }
+    int gramos_leidos = gramosConsumidos(primer_valor, segundo_valor);
+    char horario[9] = "";
+
+    char nombre_mod[6] = "";
+    char hora_mod [6] = "";
+    char gramos_mod[7] = "";
+
+    char cadena_aux[MAX_LARGO_CSV+1] = "";
+    time_a_char(mascotas[indice].UltimaDeteccion, horario);
+    cadena_recortada(nombre_mod,mascotas[indice].nombre);
+    cadena_recortada(hora_mod,horario);
+    gramos_a_mandar(gramos_mod, gramos_leidos);
+    sprintf(cadena_aux, "%s;%s;%s", gramos_mod,hora_mod,nombre_mod);
+    strncpy_(eventos[eventos_registrados], cadena_aux,MAX_LARGO_CSV+1);
+    eventos_registrados++;
+
+    ActualizarContador(&mascotas[indice]);
+    mascotas[indice].AlertaNotificada = false;
 }

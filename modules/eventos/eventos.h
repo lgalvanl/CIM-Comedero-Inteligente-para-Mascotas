@@ -21,12 +21,9 @@ static int indice_eventos = 0;
 //=====[Declarations (prototypes) of public functions]=========================
 
 void ocurreEventoUpdate();
-void registrarEvento(mascota_t *mascotas, int indice);
-void ImprimirEventos();
 void mandar_data();
-
-
 void mandarAlerta(mascota_t *mascota);
+
 //=====[#include guards - end]=================================================
 
 #endif // _EVENTOS_H_
