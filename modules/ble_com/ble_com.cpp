@@ -9,8 +9,9 @@
 
 //=====[Declaration of private data types]=====================================
 
-//=====[Declaration and initialization of public global objects]===============
 UnbufferedSerial uartBle(PD_5, PD_6, 9600);
+
+//=====[Declaration and initialization of public global objects]===============
 
 //=====[Declaration of external public global variables]=======================
 
@@ -49,7 +50,5 @@ char bleComCharRead(){
 }
 
 //=====[Implementations of private functions]==================================
-
-
 
 
