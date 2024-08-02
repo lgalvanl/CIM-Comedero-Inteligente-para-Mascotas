@@ -53,10 +53,8 @@ void inicializarArregloMascotas(mascota_t *mascotas, char *cadenaLeida){ //A par
 }
 void MostrarArreglo(mascota_t *mascotas){ //Imprime por puerto serial el arreglo de estructuras mascota_t
     if(indicePetActual == 0){
-        printf("el arreglo esta vacio!");
     } else {
      for(int i = 0; i < indicePetActual; i++){
-         //imprimir_struct(&mascotas[i]); 
     } }
 }
 
@@ -64,7 +62,6 @@ int detectarMascota(char *uidLeido) { //Compara el valor uid leido y devuelve la
     int indice = -1; 
     if (DataRecibida) {
         for (int i = 0; i < indicePetActual; i++) {
-            //printf("Comparando: %s con %s\n", arreglo_mascotas[i].id_mascota, uidLeido);
             if (strcasecmp(arreglo_mascotas[i].id_mascota, uidLeido) == 0) {
                 HayEvento = true;
                 indice = i;
